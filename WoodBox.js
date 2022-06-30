@@ -1,24 +1,8 @@
-class WoodenBox{
-    constructor(x, y, size){
-        let options = {
-            restitution: 0.8,
-            friction: 0.3,
-            density: 1.0
-        };
-        this.body = Bodies.rectangle(x, y, size, size, options);
-        World.add(world, this.body);
-        
-        this.size = size;
-    }
+class WoodBox extends BaseRect{
+    constructor(x, y, size, angle = 0, options = {restitution: 0.8, friction: 0.3, density: 1.0}){
+        super(x, y, size, size, angle, options);
 
-    display(){
-        let pos = this.body.position;
-        
-        push();
-        fill("#EBA46E");
-        stroke("brown");
-        rectMode(CENTER);
-        rect(pos.x, pos.y, this.size, this.size);
-        pop();
+        this.f_color = "#EBA46E";
+        this.st_color = "brown";
     }
 }

@@ -1,19 +1,7 @@
-class Bird{
-    constructor(x, y, radius){
-        this.body = Bodies.circle(x, y, radius); //, {restitution: 0.3}
-        World.add(world, this.body);
+class Bird extends BaseCircle{
+    constructor(x, y, radius, options = {restitution: 0.8, friction: 0.2, density: 1.5}){
+        super(x, y, radius, options);
         
-        this.radius = radius;
-    }
-
-    display(){
-        let pos = this.body.position;
-        
-        push();
-        fill("red");
-        stroke("black");
-        ellipseMode(RADIUS);
-        ellipse(pos.x, pos.y, this.radius);
-        pop();
+        this.f_color = "red";
     }
 }
