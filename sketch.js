@@ -1,12 +1,16 @@
 const Engine = Matter.Engine,
       World = Matter.World,
-      Bodies = Matter.Bodies;
+      Bodies = Matter.Bodies,
+      Mouse = Matter.Mouse,
+      MouseConstraint = Matter.MouseConstraint,
+      Constraint = Matter.Constraint;
 
 var engine, world;
 var highGround, ground, wLog1, wBox1, wBox2;
 var wLog2, wBox3, wBox4;
 var wLog3, wLog4, wBox5;
 var pig1, pig2, bird1;
+var mouse, mConstraint;
 
 var pig_img, log_img, box_img, bird_img, bg_img, ss_img, bg, ss;
 
@@ -20,17 +24,18 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(800,400);
-  bg = createSprite(400, 200, 400, 200);
-  bg.addImage(bg_img);
-
-  ss = createSprite(50, 180);
-  ss.addImage(ss_img);
-  ss.scale = 0.5;
+  const canvas = createCanvas(800,400);
   
   engine = Engine.create();
   world = engine.world;
   World.add(world, engine);
+
+  mouse = Mouse.create(canvas.p5canvas);
+  mConstraint = MouseConstraint.create(engine, {mouse:mouse});
+  World.add(world, mConstraint);
+
+  bg = createSprite(400, 200, 400, 200);
+  bg.addImage(bg_img);
 
   ground = new Ground(0, 380, 1600, 40);
   highGround = new Ground(0, 300, 200, 150);
@@ -49,8 +54,26 @@ function setup() {
   wLog4 = new WoodLog(480, 240, 70, 20, 45, 0.5);
   wBox5 = new WoodBox(450, 240, 40);
   
-  bird1 = new Bird(50, 150, 15);
+  bird1 = new Bird(65, 110, 15);
+
+  ss = new Slingshot(65, 160, 50, 50, bird1.body);
 }
+
+function mouseReleased(){
+  setTimeout(() => {
+    ss.fly();
+  }, 100);
+}
+
+function keyPressed(){
+  if(key == ' '){
+    bird1.sprite.destroy();
+    World.remove(world, bird1.body);
+    bird1 = new Bird(65, 110, 15);
+    ss.attach(bird1.body);
+  }
+}
+
 
 function draw() {
   background("yellow");
